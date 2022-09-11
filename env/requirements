@@ -1,0 +1,6 @@
+python==3.8
+flask==2.1
+sqlalchemy==1.0
+flask_sqlalchemy==2.1.0
+#my.cnf
+pymysql
