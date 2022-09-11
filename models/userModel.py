@@ -8,5 +8,19 @@ class User(db.Model):
     fullname = Column(String(60))
     age = Column(Integer)
     
+    def selectUser(self):
+        return {
+            "account":{
+                "id": self.id,
+                "fullname": self.fullname,
+                "age": self.age
+            }
+        }
+    
+
+
+
+
+
     
 #db.create_all()
