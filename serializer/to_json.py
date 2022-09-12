@@ -12,6 +12,9 @@ def serial(status=400, content=None, alert=None):
     if (alert):
         data["alert"] = alert
         
+    data["footer"] = "Api/v1 Version"
+    data["info"] = "App build with flask"
+    
     return Response(
         json.dumps(data),
         status=status,

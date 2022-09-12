@@ -1,8 +1,8 @@
 from flask import request
 from serializer.to_json import serial
-from models.userModel import User, api, db
-from models.connection.mysql import connection_mysql, session_mysql
-
+from models.userModel import User
+from models.connection.mysql import connection_mysql
+db, api = connection_mysql()
 
 @api.route('/')
 def init():

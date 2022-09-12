@@ -1,10 +1,11 @@
 from .connection.mysql import connection_mysql
 from sqlalchemy import Integer, String, Boolean, Column
+import uuid
 db, api = connection_mysql()
 
 class User(db.Model):
     __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
+    id = Column(String(60), primary_key=True, default=uuid.uuid4 )
     fullname = Column(String(60))
     age = Column(Integer)
     
@@ -22,5 +23,5 @@ class User(db.Model):
 
 
 
-    
+#db.drop_all()  
 #db.create_all()

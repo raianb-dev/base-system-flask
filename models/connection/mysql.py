@@ -9,8 +9,5 @@ def connection_mysql():
     db = SQLAlchemy(app)
     return db, app
 
-def session_mysql():
-    db , api = connection_mysql()
-    return db
-    
+
     
