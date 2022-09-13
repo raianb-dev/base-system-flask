@@ -2,13 +2,16 @@ from flask import Response
 import datetime, json
 
 
-def serial(status=400, content=None, alert=None):
+def serial(status=400, content=None, token=None, alert=None):
     data = {}
-    data["message"] = "procedure performed successfully"
+    data["message"] = "Procedure performed successfully"
     data["time_request"] = str(datetime.datetime.now())
     data["status"] = status
-    data["content"] = [content]
+    data["content"] = content
     
+
+    if (token):
+        data["access_token"] = token
     if (alert):
         data["alert"] = alert
         
