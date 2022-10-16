@@ -1,19 +1,14 @@
 
+import uuid
 from serializer.to_json import serial
 from models.userModel import Account , db, api
-from flask_jwt_extended import create_access_token, jwt_required, create_refresh_token, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import request, jsonify
-from flask_swagger import swagger
 
-@api.route("/spec")
-def spec():
-    swag = swagger(api)
-    swag['info']['version'] = "1.0"
-    swag['info']['title'] = "My API"
-    return jsonify(swag)
 
-@api.route('/')
+
+@api.get('/')
 @jwt_required()
 def init():
     msg = "Api v1 Connection Success"
@@ -23,29 +18,40 @@ def init():
 def login():
     
     data = request.get_json()
-    user = Account.query.filter_by(username=data["username"]).first()
-    user = user.userGetby()
-    pwd = user["pwd"]
-    chek_pass = check_password_hash(pwd, data["password"])
+    query = Account.query.filter_by(username=data["username"]).first()
+    
 
-    if chek_pass is False:
-        msg = 'pwd Incorrect or urser incorrect'
-        return serial(401, msg )
+    if(query):
+        
+        user = query.userGetby()
+        pwd = user["pwd"]
+        chek_pass = check_password_hash(pwd, data["password"])
+        
+        if chek_pass is False:
+            msg = 'pwd incorrect or urser incorrect'
+            return serial(401, msg )
+        else:
+            user = Account.query.filter_by(username=data["username"]).first()
+            user.online = True
+            db.session.merge(user)
+            db.session.commit()
+            access_token = create_access_token(identity=pwd)
+            msg ='ok'
+        return serial(200, msg, access_token)
+    
     else:
-        user = Account.query.filter_by(username=data["username"]).first()
-        user.online = True
-        db.session.merge(user)
-        db.session.commit()
-        access_token = create_access_token(identity=pwd)
-        msg ='ok'
-    return serial(200, msg, access_token)
+        msg = 'pwd incorrect or urser not exist'
+        return serial(401, msg )
+        
     
 
 @api.route('/v1/account/users', methods=['POST'])
 def account():
     data = request.get_json()
     gen_pass = str(generate_password_hash(data["password"]))
+    uuidone = str(uuid.uuid4())
     user = Account(
+        id = uuidone,
         fullname = data["fullname"],
         username = data["username"],
         password = gen_pass,
@@ -109,4 +115,7 @@ def logout(id):
     user = user.userGetby()
     msg = "logout success"
     return serial(200, msg )
+
+if __name__ == "__main__":
+    api.run(port=8000)
 
