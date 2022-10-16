@@ -9,7 +9,7 @@ def connection_mysql():
     app.config['SECRET_KEY'] = '932bb014dbbd47f7aff1d4a381ff486b'
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
     jwt = JWTManager(app)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/database'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite3.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db = SQLAlchemy(app)
     migrate = Migrate(app, db)
