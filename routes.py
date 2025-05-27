@@ -12,7 +12,11 @@ swagger_template = {
     "swagger": "2.0",
     "info": {
         "title": "Base System API",
-        "description": "Base System Flask",
+        "description": "Documentação da API Base System",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Suporte Base System",
+            "email": ""},
         "version": "1.0"
     },
     "securityDefinitions": {

@@ -16,6 +16,7 @@ class Account(db.Model):
     urlPic_Banner = Column(String(60))
     bio = Column(String(255))
     friends_count = Column(Integer)
+    social_media = Column(String(255))
     
     def selectUser(self):
         return {
